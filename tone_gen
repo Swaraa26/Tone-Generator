@@ -1,0 +1,175 @@
+
+---------- Forwarded message ---------
+From: Swara Rajesh Shelke <swara.shelke.22042@iitgoa.ac.in>
+Date: Thu, 9 Nov 2023, 3:07 pm
+Subject: 
+To: Tejavath Sravanthi <tejavath.sravanthi.22042@iitgoa.ac.in>
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+
+entity TONE_GEN2 is                   -- Entity declaration
+port(CLK : in std_logic;           -- Clock input of tone generator
+RSTN : in std_logic;    
+TONE : in std_logic;      -- Active low reset input of the circuit
+TONE_OUT: out std_logic);     -- Output of tone generator
+end TONE_GEN2;
+
+architecture STRUCTURE of TONE_GEN2 is
+
+ type arr_type_octave is array (0 to 7) of integer range 0 to 7;
+ type arr_type_TWINKLE is array (0 to 41) of integer range 0 to 7;
+ 
+ SIGNAL SA,RE,GA, MA, PA, DHA, NI, SA1: STD_LOGIC:='0';
+ signal cnt_sa: integer range 0 to 95555 :=0;
+ signal cnt_re: integer range 0 to 85132 :=0;
+ signal cnt_ga: integer range 0 to 75843 :=0;
+ signal cnt_ma: integer range 0 to 71586 :=0;
+ signal cnt_pa: integer range 0 to 63776 :=0;
+ signal cnt_dha: integer range 0 to 56818 :=0;
+ signal cnt_ni: integer range 0 to 50620 :=0;
+ signal cnt_sa1: integer range 0 to 47778 :=0;
+ signal cnt_tone: integer range 0 to 25000000 :=0;
+ signal cnt_master: integer range 0 to 41 :=0;
+ 
+ constant octave : arr_type_octave:= ( 0,1,2,3,4,5,6,7 );
+ constant TWINKLE : arr_type_TWINKLE:= (0,0,4,4,5,5,4,3,3,1,1,2,2,0,4,4,3,3,2,2,1,4,4,3,3,2,2,1,0,0,4,4,5,5,4,3,3,1,1,2,2,0 );
+
+ 
+ begin 
+  process(clk)
+  begin 
+   if rstn ='0' then
+  cnt_sa <= 0;
+  cnt_re <= 0;
+cnt_ga <= 0;
+cnt_ma<= 0;
+cnt_pa <= 0;
+cnt_dha <= 0;
+cnt_ni <= 0;
+cnt_sa1 <= 0;
+cnt_tone <= 0;
+cnt_master <= 0;
+elsif ( clk' event and clk='1') then
+  if ( cnt_sa=95555 ) then 
+ cnt_sa <= 0;
+ sa <= not sa;
+else 
+  cnt_sa <= cnt_sa + 1;
+end if;
+
+if ( cnt_re = 85132 ) then 
+ cnt_re <= 0;
+ re <= not re;
+else 
+  cnt_re <= cnt_re + 1;
+end if;
+
+if ( cnt_ga = 75843 ) then 
+ cnt_ga <= 0;
+ ga <= not ga;
+else 
+  cnt_ga <= cnt_ga + 1;
+end if;
+
+
+
+
+if ( cnt_ma = 71586 ) then 
+ cnt_ma <= 0;
+ ma <= not ma;
+else 
+  cnt_ma <= cnt_ma + 1;
+end if;
+
+
+if ( cnt_pa = 63776 ) then 
+ cnt_pa <= 0;
+ pa <= not pa;
+else 
+  cnt_pa <= cnt_pa + 1;
+end if;
+
+
+if ( cnt_dha = 56818 ) then 
+ cnt_dha <= 0;
+ dha <= not dha;
+else 
+  cnt_dha <= cnt_dha + 1;
+end if;
+
+
+if ( cnt_ni = 50620 ) then 
+ cnt_ni <= 0;
+ ni <= not ni;
+else 
+  cnt_ni <= cnt_ni + 1;
+end if;
+
+
+if ( cnt_sa1 = 47778 ) then 
+ cnt_sa1 <= 0;
+ sa1 <= not sa1;
+else 
+  cnt_sa1 <= cnt_sa1 + 1;
+end if;
+
+if (CNT_TONE = 25000000) then
+      CNT_TONE <= 0;
+      CNT_MASTER <= CNT_MASTER + 1;
+      else
+           CNT_TONE <= CNT_TONE + 1;
+     end if ;
+end if;
+
+
+IF TONE='0' THEN
+
+
+case Octave(CNT_MASTER)  is
+when 0 =>
+TONE_OUT <= SA;
+when 1 =>
+TONE_OUT <= RE;
+when 2 =>
+TONE_OUT <= GA;
+when 3 =>
+TONE_OUT <= MA;
+when 4 =>
+TONE_OUT <= PA;
+when 5 =>
+TONE_OUT <= DHA;
+when 6 =>
+TONE_OUT <= NI;
+when 7 =>
+TONE_OUT <= SA1;
+WHEN OTHERS=>
+TONE_OUT<='0';
+end case;
+
+ELSE
+case TWINKLE(CNT_MASTER) is
+when 0 =>
+TONE_OUT <= SA;
+when 1 =>
+TONE_OUT <= RE;
+when 2 =>
+TONE_OUT <= GA;
+when 3 =>
+TONE_OUT <= MA;
+when 4 =>
+TONE_OUT <= PA;
+when 5 =>
+TONE_OUT <= DHA;
+when 6 =>
+TONE_OUT <= NI;
+when 7 =>
+TONE_OUT <= SA1;
+WHEN OTHERS=>
+TONE_OUT<='0';
+end case;
+end if;
+end process;
+end STRUCTURE;
+
